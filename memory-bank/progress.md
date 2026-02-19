@@ -13,11 +13,8 @@
 
 ## What Doesn't Work Yet
 
-- [ ] No API endpoints
-- [ ] No database
 - [ ] No admin panel
-- [ ] No device config endpoint
-- [ ] No family access
+- [ ] No family access endpoint
 
 ## MVP Milestone Checklist
 
@@ -28,10 +25,10 @@
 - [x] Basic responsive layout (mobile → TV)
 
 ### Phase 2 — Data Layer
-- [ ] Database schema (points table with dual timestamps, config table)
-- [ ] Ingest API (POST, batch points, idempotent)
-- [ ] Public track API (GET, delay-filtered, downsampled)
-- [ ] Device config API (GET, plain-text response)
+- [x] Database schema (points table with dual timestamps, config table)
+- [x] Ingest API (POST, batch points, idempotent)
+- [x] Public track API (GET, delay-filtered, downsampled)
+- [x] Device config API (GET, plain-text response)
 
 ### Phase 3 — Controls
 - [ ] Admin page (delay slider, sharing toggle)

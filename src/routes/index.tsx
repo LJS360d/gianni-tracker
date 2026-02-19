@@ -11,7 +11,7 @@ export default function Home() {
   const loading = <div class="grid place-items-center h-full text-neutral-400">{t("map.loading")}</div>;
 
   return (
-    <main class="flex flex-col h-[calc(100vh-3rem)] min-h-0 bg-[#0d0d0d]">
+    <main class="flex flex-col flex-1 min-h-0 bg-[#0d0d0d]">
       <div class="flex-1 min-h-0 relative">
         <Show when={mounted()} fallback={loading}>
           <Suspense fallback={loading}>

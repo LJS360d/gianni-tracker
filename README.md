@@ -49,7 +49,7 @@ bun run start
 
 Create `.env` from `.env.example`. Required for full functionality:
 
-- `DATABASE_URL` — database connection (not needed for map-only dev).
+- `DATABASE_PATH` — path to SQLite file (default `./data/gianni.db`).
 - `DEVICE_AUTH_TOKEN` — device auth for ingest API.
 - `FAMILY_ACCESS_TOKEN` — token for family position endpoint.
 - `PUBLIC_DELAY_HOURS` — default public delay (e.g. 48).

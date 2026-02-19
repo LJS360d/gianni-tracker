@@ -1,0 +1,28 @@
+{
+  "name": "gianni-tracker",
+  "type": "module",
+  "scripts": {
+    "dev": "vinxi dev",
+    "build": "vinxi build",
+    "start": "vinxi start"
+  },
+  "dependencies": {
+    "@solid-primitives/i18n": "^2.2.1",
+    "@solid-primitives/storage": "^4.3.3",
+    "@solidjs/router": "^0.15.0",
+    "@solidjs/start": "^1.1.0",
+    "leaflet": "^1.9.4",
+    "solid-js": "^1.9.5",
+    "vinxi": "^0.5.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.7",
+    "@types/leaflet": "^1.9.21",
+    "tailwindcss": "^4.0.7",
+    "vite-plugin-pwa": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=24",
+    "bun": ">=1.3.9"
+  }
+}

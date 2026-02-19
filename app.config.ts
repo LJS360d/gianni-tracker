@@ -21,7 +21,18 @@ export default defineConfig({
         },
         workbox: {
           globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
-          cleanupOutdatedCaches: true
+          cleanupOutdatedCaches: true,
+          runtimeCaching: [
+            {
+              urlPattern: /^https:\/\/([a-d])\.basemaps\.cartocdn\.com\/.*/,
+              handler: "CacheFirst",
+              options: {
+                cacheName: "carto-tiles",
+                expiration: { maxEntries: 400, maxAgeSeconds: 30 * 24 * 60 * 60 },
+                cacheableResponse: { statuses: [0, 200] }
+              }
+            }
+          ]
         }
       })
     ]

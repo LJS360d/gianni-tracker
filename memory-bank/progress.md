@@ -13,7 +13,7 @@
 
 ## What Doesn't Work Yet
 
-- [ ] Phase 4: offline tile caching, track animation, embeddable webview, TV optimization
+- [x] Phase 4: offline tile caching, track animation, embeddable webview, TV optimization
 
 ## MVP Milestone Checklist
 
@@ -35,7 +35,35 @@
 - [x] Last-sync status display
 
 ### Phase 4 — Polish
-- [ ] Offline tile caching strategy
-- [ ] Track animation / progressive reveal
-- [ ] Embeddable webview mode (minimal chrome)
-- [ ] TV display optimization (large fonts, high contrast)
+- [x] Offline tile caching strategy
+- [x] Track animation / progressive reveal
+- [x] Embeddable webview mode (minimal chrome)
+- [x] TV display optimization (large fonts, high contrast)
+
+---
+
+## Planned / Backlog
+
+### Rich seed: Lucca → Tokyo route
+
+- **Route**: Many more points simulating a journey from Lucca (Italy) → Tokyo (Japan).
+- **Overland segments**: Lucca → Serbia → Bulgaria → Turkey → Georgia (regular polyline).
+- **Plane segment**: Special polyline type for flight Georgia → Turkmenistan.
+- **Overland**: Turkmenistan → China, passing through Mongolia (Ulan Bator included), then down through China.
+- **Boat segment**: Special polyline for boat travel to Seoul.
+- **Overland**: Regular polyline along east coast of South Korea.
+- **Boat segment**: Special polyline boat to Japan, then to Tokyo.
+- **Media**: At least 100 photo/video entries along the route (mix of points); sources not limited to YouTube/Imgur.
+
+### Segment types (polylines)
+
+- **Regular**: default ground travel (current single polyline).
+- **Plane**: distinct styling/type for flight segments (e.g. Georgia → Turkmenistan).
+- **Boat**: distinct styling/type for boat segments (e.g. to Seoul, to Japan).
+- Schema/API and map rendering to support segment type (or multiple polylines with type metadata).
+
+### Media: local / embedded video
+
+- Support media entries that are **local** (or self-hosted) videos, not only YouTube or Imgur.
+- Playback via an actual embedded player (e.g. `<video>` with source URL), not only iframe embeds for external platforms.
+- Plan covers: data model (e.g. `type: "video"` + source or `provider: "local"`), storage/URLs for local files, and UI (MediaModal or equivalent) rendering local video in an embedded player.

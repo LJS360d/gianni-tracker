@@ -2,19 +2,19 @@
 
 ## Current Phase
 
-**Phase 3 complete.** Admin controls, family track endpoint, and last-sync display are in place.
+**Phase 4 complete.** Offline tile caching, track animation, embed view, and TV optimization are in place.
 
 ## What Was Just Done
 
-- Phase 3: Admin page at `/admin` (token gate via sessionStorage, delay slider 0–168h, sharing toggle, last-sync from `GET /api/admin/status`)
-- `GET /api/admin/config` and `PATCH /api/admin/config` (Bearer ADMIN_ACCESS_TOKEN), `GET /api/admin/status` for last_sync_server_ts
-- `GET /api/family/track`: same shape as public track, uses FAMILY_DELAY_HOURS and Bearer FAMILY_ACCESS_TOKEN
-- `getLastSyncServerTs()` in db.ts; ADMIN_ACCESS_TOKEN in .env.example
-- Nav added to app root; Admin link in nav; i18n keys for admin (en/it)
+- Phase 4: Workbox runtime caching for CartoDB tiles (CacheFirst, 400 entries, 30-day expiry)
+- Map: progressive track reveal over 4s (optional via `animateTrack` prop; disabled on /embed and /tv)
+- Routes `/embed` and `/tv`: no Nav (conditional in app root); embed = minimal chrome, tv = same + .tv-display (large zoom controls, high-contrast loading text)
+- app.tsx: Nav hidden when pathname is /embed or /tv
 
 ## What Comes Next
 
-1. **Phase 4**: Offline tile caching, track animation, embeddable webview, TV display optimization
+1. Deploy / production hardening as needed
+2. **Planned (see progress.md “Planned / Backlog”)**: Rich Lucca→Tokyo seed (many points; Serbia, Bulgaria, Turkey, Georgia → plane → Turkmenistan → China/Mongolia/Ulan Bator → boat → Seoul → Korea east coast → boat → Japan); special polyline types for plane/boat; ≥100 photo/video entries; media support for local/embedded video (actual `<video>` player), not only YouTube/Imgur
 
 ## Active Decisions
 

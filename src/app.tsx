@@ -2,6 +2,7 @@ import { Router } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
 import { I18nProvider } from "~/i18n";
+import Nav from "~/components/Nav";
 import "./app.css";
 
 export default function App() {
@@ -10,6 +11,7 @@ export default function App() {
       <Router
         root={props => (
           <div class="flex flex-col h-screen overflow-hidden">
+            <Nav />
             <Suspense>{props.children}</Suspense>
           </div>
         )}

@@ -2,7 +2,7 @@ import { mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
-import { eq, inArray } from "drizzle-orm";
+import { desc, eq, inArray } from "drizzle-orm";
 import { config, media, points } from "./schema";
 
 const DB_PATH = process.env.DATABASE_PATH ?? join(process.cwd(), "data", "main.db");
@@ -76,6 +76,12 @@ export function isSharingEnabled(): boolean {
 export function setConfig(key: string, value: string): void {
   const db = ensureDb();
   db.insert(config).values({ key, value }).onConflictDoUpdate({ target: config.key, set: { value } }).run();
+}
+
+export function getLastSyncServerTs(): number | null {
+  const db = ensureDb();
+  const rows = db.select({ serverTs: points.serverTs }).from(points).orderBy(desc(points.serverTs)).limit(1).all();
+  return rows[0]?.serverTs ?? null;
 }
 
 export function getMediaByPointIds(pointIds: number[]): Array<{ pointId: number; type: string; url: string; title: string; description: string }> {

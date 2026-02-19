@@ -16,6 +16,9 @@ export default function Nav() {
           <li class={`border-b-2 ${active("/about")}`}>
             <A href="/about">{t("nav.about")}</A>
           </li>
+          <li class={`border-b-2 ${active("/admin")}`}>
+            <A href="/admin">{t("nav.admin")}</A>
+          </li>
         </ul>
         <div class="flex gap-2 text-sm text-neutral-500">
           <button

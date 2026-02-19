@@ -13,8 +13,7 @@
 
 ## What Doesn't Work Yet
 
-- [ ] No admin panel
-- [ ] No family access endpoint
+- [ ] Phase 4: offline tile caching, track animation, embeddable webview, TV optimization
 
 ## MVP Milestone Checklist
 
@@ -31,9 +30,9 @@
 - [x] Device config API (GET, plain-text response)
 
 ### Phase 3 — Controls
-- [ ] Admin page (delay slider, sharing toggle)
-- [ ] Family access endpoint (token-auth, reduced delay)
-- [ ] Last-sync status display
+- [x] Admin page (delay slider, sharing toggle)
+- [x] Family access endpoint (token-auth, reduced delay)
+- [x] Last-sync status display
 
 ### Phase 4 — Polish
 - [ ] Offline tile caching strategy

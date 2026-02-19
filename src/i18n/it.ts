@@ -5,7 +5,19 @@ export const dict = {
   },
   nav: {
     home: "Home",
-    about: "Chi siamo"
+    about: "Chi siamo",
+    admin: "Admin"
+  },
+  admin: {
+    title: "Admin",
+    tokenPlaceholder: "Token admin",
+    submitToken: "Sblocca",
+    delayLabel: "Ritardo pubblico (ore)",
+    sharingLabel: "Condivisione attiva",
+    lastSync: "Ultima sincronizzazione",
+    error: "Errore",
+    never: "Mai",
+    unauthorized: "Token mancante o non valido"
   },
   map: {
     loading: "Caricamento mappa…",

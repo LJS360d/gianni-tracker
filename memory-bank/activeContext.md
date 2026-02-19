@@ -2,20 +2,19 @@
 
 ## Current Phase
 
-**Phase 2 complete.** Data layer in place: Bun SQLite, ingest/track/device-config APIs, map fetches and draws track.
+**Phase 3 complete.** Admin controls, family track endpoint, and last-sync display are in place.
 
 ## What Was Just Done
 
-- Phase 2: Database (Bun SQLite, points + config tables), `lib/db.ts`, `lib/geo.ts` (Douglas–Peucker downsampling)
-- `POST /api/ingest`: batch points, device_ts + server_ts, optional `Authorization: Bearer` (DEVICE_AUTH_TOKEN)
-- `GET /api/track`: delay-filtered, downsampled, returns `{ points, delay_hours }`; empty when sharing off
-- `GET /api/device/config`: plain-text key=value for device pull
-- Map fetches `/api/track` and draws white polyline, fits bounds when points exist
-- `.env.example` with DATABASE_PATH, DEVICE_AUTH_TOKEN, PUBLIC_DELAY_HOURS, FAMILY_*
+- Phase 3: Admin page at `/admin` (token gate via sessionStorage, delay slider 0–168h, sharing toggle, last-sync from `GET /api/admin/status`)
+- `GET /api/admin/config` and `PATCH /api/admin/config` (Bearer ADMIN_ACCESS_TOKEN), `GET /api/admin/status` for last_sync_server_ts
+- `GET /api/family/track`: same shape as public track, uses FAMILY_DELAY_HOURS and Bearer FAMILY_ACCESS_TOKEN
+- `getLastSyncServerTs()` in db.ts; ADMIN_ACCESS_TOKEN in .env.example
+- Nav added to app root; Admin link in nav; i18n keys for admin (en/it)
 
 ## What Comes Next
 
-1. **Phase 3**: Admin page (delay slider, sharing toggle), family access endpoint (token, reduced delay), last-sync display
+1. **Phase 4**: Offline tile caching, track animation, embeddable webview, TV display optimization
 
 ## Active Decisions
 

@@ -1,24 +1,19 @@
 import { A } from "@solidjs/router";
-import Counter from "~/components/Counter";
+import { useI18n } from "~/i18n";
 
 export default function About() {
+  const { t } = useI18n();
+
   return (
-    <main class="text-center mx-auto text-gray-700 p-4">
-      <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">About Page</h1>
-      <Counter />
-      <p class="mt-8">
-        Visit{" "}
-        <a href="https://solidjs.com" target="_blank" class="text-sky-600 hover:underline">
-          solidjs.com
-        </a>{" "}
-        to learn how to build Solid apps.
+    <main class="max-w-2xl mx-auto px-4 py-12 text-neutral-300">
+      <h1 class="text-2xl font-light text-neutral-100 mb-6">{t("nav.about")}</h1>
+      <p class="mb-6">
+        {t("app.title")} — {t("map.lastUpdate")}
       </p>
-      <p class="my-4">
-        <A href="/" class="text-sky-600 hover:underline">
-          Home
+      <p class="mb-8">
+        <A href="/" class="text-neutral-400 hover:text-neutral-200 underline">
+          {t("nav.home")}
         </A>
-        {" - "}
-        <span>About Page</span>
       </p>
     </main>
   );

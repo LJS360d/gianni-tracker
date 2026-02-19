@@ -1,25 +1,24 @@
-import { A } from "@solidjs/router";
-import Counter from "~/components/Counter";
+import { createSignal, lazy, onMount, Show, Suspense } from "solid-js";
+import { useI18n } from "~/i18n";
+
+const Map = lazy(() => import("~/components/Map"));
 
 export default function Home() {
+  const { t } = useI18n();
+  const [mounted, setMounted] = createSignal(false);
+  onMount(() => setMounted(true));
+
+  const loading = <div class="grid place-items-center h-full text-neutral-400">{t("map.loading")}</div>;
+
   return (
-    <main class="text-center mx-auto text-gray-700 p-4">
-      <h1 class="max-6-xs text-6xl text-sky-700 font-thin uppercase my-16">Hello world!</h1>
-      <Counter />
-      <p class="mt-8">
-        Visit{" "}
-        <a href="https://solidjs.com" target="_blank" class="text-sky-600 hover:underline">
-          solidjs.com
-        </a>{" "}
-        to learn how to build Solid apps.
-      </p>
-      <p class="my-4">
-        <span>Home</span>
-        {" - "}
-        <A href="/about" class="text-sky-600 hover:underline">
-          About Page
-        </A>{" "}
-      </p>
+    <main class="flex flex-col h-[calc(100vh-3rem)] min-h-0 bg-[#0d0d0d]">
+      <div class="flex-1 min-h-0 relative">
+        <Show when={mounted()} fallback={loading}>
+          <Suspense fallback={loading}>
+            <Map class="absolute inset-0" initialCenter={[45.46, 9.19]} initialZoom={5} />
+          </Suspense>
+        </Show>
+      </div>
     </main>
   );
 }

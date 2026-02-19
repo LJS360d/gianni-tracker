@@ -1,32 +1,69 @@
-# SolidStart
+# Gianni Tracker
 
-Everything you need to build a Solid project, powered by [`solid-start`](https://start.solidjs.com);
+Web app that shows a delayed GPS track on a map so people can follow a traveler’s route without seeing real-time position. Built for 2G devices that send position in bursts.
 
-## Creating a project
+## What it does
+
+- **Public map**: One page with a dark map and the track, always delayed (e.g. 48–72h). No live position.
+- **Gianni**: Can turn sharing on/off and set the delay; changes apply when the device next syncs.
+- **Family**: Token-protected access to a closer (but still delayed) position.
+- **Device**: Sends batched GPS points when it has connectivity; pulls a simple config file from the server.
+
+## Tech stack
+
+- [SolidStart](https://start.solidjs.com) (SolidJS + Vinxi), TailwindCSS v4, Leaflet (CartoDB Dark Matter), PWA, i18n (it/en).
+- Runtime: **Bun** (Node ≥24 supported).
+
+## Setup
 
 ```bash
-# create a new project in the current directory
-npm init solid@latest
-
-# create a new project in my-app
-npm init solid@latest my-app
+bun install
 ```
 
-## Developing
+Copy `.env.example` to `.env` and set the variables (see below). For local UI-only work you can run without a database.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Develop
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+bun run dev
 ```
 
-## Building
+Open the URL shown in the terminal (e.g. `http://localhost:3000`).
 
-Solid apps are built with _presets_, which optimise your project for deployment to different environments.
+## Build and run
 
-By default, `npm run build` will generate a Node app that you can run with `npm start`. To use a different preset, add it to the `devDependencies` in `package.json` and specify in your `app.config.js`.
+```bash
+bun run build
+bun run start
+```
 
-## This project was created with the [Solid CLI](https://github.com/solidjs-community/solid-cli)
+## Scripts
+
+| Script   | Command         | Description        |
+|----------|-----------------|--------------------|
+| `dev`    | `vinxi dev`     | Dev server         |
+| `build`  | `vinxi build`   | Production build   |
+| `start`  | `vinxi start`   | Run production app |
+
+## Environment
+
+Create `.env` from `.env.example`. Required for full functionality:
+
+- `DATABASE_URL` — database connection (not needed for map-only dev).
+- `DEVICE_AUTH_TOKEN` — device auth for ingest API.
+- `FAMILY_ACCESS_TOKEN` — token for family position endpoint.
+- `PUBLIC_DELAY_HOURS` — default public delay (e.g. 48).
+- `FAMILY_DELAY_HOURS` — family view delay (e.g. 6).
+
+## Project layout
+
+- `src/routes/` — file-based pages (e.g. index = public map).
+- `src/components/` — reusable UI (e.g. map, nav).
+- `src/lib/` — shared logic and API helpers.
+- `src/i18n/` — translation dictionaries (it, en).
+- `memory-bank/` — context and progress notes for development (and AI agents).
+- `AGENTS.md` — high-level guidance for contributors and tooling.
+
+## License
+
+Private / unlicensed unless stated otherwise.

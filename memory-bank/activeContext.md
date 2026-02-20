@@ -7,9 +7,9 @@
 ## What Was Just Done
 
 - Phase 4: Workbox runtime caching for CartoDB tiles (CacheFirst, 400 entries, 30-day expiry)
-- Map: progressive track reveal over 4s (optional via `animateTrack` prop; disabled on /embed and /tv)
-- Routes `/embed` and `/tv`: no Nav (conditional in app root); embed = minimal chrome, tv = same + .tv-display (large zoom controls, high-contrast loading text)
-- app.tsx: Nav hidden when pathname is /embed or /tv
+- Map: progressive track reveal over 4s (optional via `animateTrack` prop; disabled when `?mode=embed` or `?mode=tv`)
+- Single map route `/`: modes via `?mode=embed` (minimal chrome, no animation, Italy-focused view) or `?mode=tv` (same + .tv-display: large zoom controls, high-contrast loading). Default mode = full chrome, animated track, wide view.
+- app.tsx: settings chrome hidden when pathname is `/` and `mode` is `embed` or `tv`
 
 ## What Comes Next
 

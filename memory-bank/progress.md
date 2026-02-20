@@ -37,33 +37,17 @@
 ### Phase 4 — Polish
 - [x] Offline tile caching strategy
 - [x] Track animation / progressive reveal
-- [x] Embeddable webview mode (minimal chrome)
-- [x] TV display optimization (large fonts, high contrast)
+- [x] Embeddable webview and TV modes via `?mode=embed` and `?mode=tv` on `/` (minimal chrome, no animation; TV adds large zoom/contrast)
 
 ---
 
+## Implemented from Backlog
+
+- **Segment types**: `points.segment_type` (ground | plane | boat). Ingest accepts optional `segment_type`; track/family APIs return it; Map draws separate polylines per segment (ground: white, plane: light blue dashed, boat: blue dashed).
+- **Media provider**: `media.provider` (youtube | imgur | local). Track/family APIs return `provider`; MediaModal uses `<video>` for local/direct video URLs, iframe for YouTube.
+- **Default seed**: `bun run seed` — Lucca → Serbia → Bulgaria → Turkey → Georgia → (plane) Turkmenistan → Uzbekistan → Mongolia (Ulan Bator) → China → (boat) Seoul → east coast Korea → (boat) Japan → Tokyo; 471 points, 105 media (mix image/video, youtube/imgur/local). Delay set to 168h for visibility.
+
 ## Planned / Backlog
 
-### Rich seed: Lucca → Tokyo route
-
-- **Route**: Many more points simulating a journey from Lucca (Italy) → Tokyo (Japan).
-- **Overland segments**: Lucca → Serbia → Bulgaria → Turkey → Georgia (regular polyline).
-- **Plane segment**: Special polyline type for flight Georgia → Turkmenistan.
-- **Overland**: Turkmenistan → China, passing through Mongolia (Ulan Bator included), then down through China.
-- **Boat segment**: Special polyline for boat travel to Seoul.
-- **Overland**: Regular polyline along east coast of South Korea.
-- **Boat segment**: Special polyline boat to Japan, then to Tokyo.
-- **Media**: At least 100 photo/video entries along the route (mix of points); sources not limited to YouTube/Imgur.
-
-### Segment types (polylines)
-
-- **Regular**: default ground travel (current single polyline).
-- **Plane**: distinct styling/type for flight segments (e.g. Georgia → Turkmenistan).
-- **Boat**: distinct styling/type for boat segments (e.g. to Seoul, to Japan).
-- Schema/API and map rendering to support segment type (or multiple polylines with type metadata).
-
-### Media: local / embedded video
-
-- Support media entries that are **local** (or self-hosted) videos, not only YouTube or Imgur.
-- Playback via an actual embedded player (e.g. `<video>` with source URL), not only iframe embeds for external platforms.
-- Plan covers: data model (e.g. `type: "video"` + source or `provider: "local"`), storage/URLs for local files, and UI (MediaModal or equivalent) rendering local video in an embedded player.
+- Serve local media files (e.g. `/media/*`) so seed local URLs work; optional storage/upload for admin.
+- Further route/media tweaks as needed.

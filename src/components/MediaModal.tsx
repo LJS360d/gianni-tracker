@@ -6,6 +6,7 @@ export type MediaItem = {
   url: string;
   title: string;
   description: string;
+  provider?: string;
 };
 
 function getYoutubeEmbedId(url: string): string | null {
@@ -23,6 +24,18 @@ function getYoutubeEmbedId(url: string): string | null {
   return null;
 }
 
+function isLocalVideo(item: MediaItem): boolean {
+  if (item.type !== "video") return false;
+  if (item.provider === "local") return true;
+  try {
+    const u = new URL(item.url);
+    const path = u.pathname.toLowerCase();
+    return /\.(mp4|webm|ogg|mov)(\?|$)/i.test(path) || (!item.provider && /\.(mp4|webm|ogg|mov)(\?|$)/i.test(item.url));
+  } catch {
+    return false;
+  }
+}
+
 type Props = {
   media: Accessor<MediaItem | null>;
   onClose: () => void;
@@ -33,6 +46,7 @@ export default function MediaModal(props: Props) {
     <Show when={props.media()}>
       {(m) => {
         const videoId = () => (m().type === "video" ? getYoutubeEmbedId(m().url) : null);
+        const localVideo = () => isLocalVideo(m());
         return (
           <div
             class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 p-4"
@@ -61,26 +75,40 @@ export default function MediaModal(props: Props) {
                 </h2>
                 <p class="mb-4 text-sm text-neutral-400">{m().description}</p>
                 <Show
-                  when={m().type === "video" && videoId()}
+                  when={m().type === "video" && localVideo()}
                   fallback={
-                    <img
-                      src={m().url}
-                      alt=""
-                      class="w-full rounded object-contain"
-                    />
+                    <Show
+                      when={m().type === "video" && videoId()}
+                      fallback={
+                        <img
+                          src={m().url}
+                          alt=""
+                          class="w-full rounded object-contain"
+                        />
+                      }
+                    >
+                      {(id: Accessor<string>) => (
+                        <div class="aspect-video w-full overflow-hidden rounded">
+                          <iframe
+                            src={`https://www.youtube.com/embed/${id()}?autoplay=0`}
+                            title={m().title}
+                            class="h-full w-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                          />
+                        </div>
+                      )}
+                    </Show>
                   }
                 >
-                  {(id: Accessor<string>) => (
-                    <div class="aspect-video w-full overflow-hidden rounded">
-                      <iframe
-                        src={`https://www.youtube.com/embed/${id()}?autoplay=0`}
-                        title={m().title}
-                        class="h-full w-full"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen
-                      />
-                    </div>
-                  )}
+                  <div class="aspect-video w-full overflow-hidden rounded bg-black">
+                    <video
+                      src={m().url}
+                      controls
+                      class="h-full w-full"
+                      title={m().title}
+                    />
+                  </div>
                 </Show>
               </div>
             </div>

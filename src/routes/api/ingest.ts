@@ -1,5 +1,6 @@
 import type { APIEvent } from "@solidjs/start/server";
 import { getDb, points } from "~/lib/db";
+import { segmentTypes, type SegmentType } from "~/lib/schema";
 
 const DEVICE_TOKEN = process.env.DEVICE_AUTH_TOKEN ?? "";
 
@@ -7,6 +8,7 @@ type IngestPoint = {
   lat: number;
   lng: number;
   device_ts: number | string;
+  segment_type?: string;
 };
 
 export function parseDeviceTs(v: number | string): number {
@@ -29,7 +31,12 @@ export function validatePoint(p: unknown): IngestPoint | null {
   if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return null;
   const device_ts = parseDeviceTs((o.device_ts as number | string) ?? 0);
   if (device_ts <= 0) return null;
-  return { lat, lng, device_ts };
+  const rawSegment = o.segment_type as string | undefined;
+  const segment_type =
+    typeof rawSegment === "string" && (segmentTypes as readonly string[]).includes(rawSegment)
+      ? (rawSegment as SegmentType)
+      : "ground";
+  return { lat, lng, device_ts, segment_type };
 }
 
 export async function POST(event: APIEvent) {
@@ -78,7 +85,8 @@ export async function POST(event: APIEvent) {
           lat: p.lat,
           lng: p.lng,
           deviceTs: Number(p.device_ts),
-          serverTs
+          serverTs,
+          segmentType: p.segment_type ?? "ground"
         })
         .onConflictDoNothing({ target: [points.deviceTs, points.lat, points.lng] })
         .run();

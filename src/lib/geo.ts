@@ -1,4 +1,4 @@
-export type Point = { lat: number; lng: number; device_ts: number };
+export type Point = { lat: number; lng: number; device_ts: number; segment_type?: string };
 
 function perpendicularDistance(
   p: Point,

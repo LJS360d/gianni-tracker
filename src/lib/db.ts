@@ -15,36 +15,14 @@ function ensureDb() {
   mkdirSync(dir, { recursive: true });
   const sqlite = new Database(DB_PATH);
   _db = drizzle(sqlite);
-  sqlite.exec(`
-    CREATE TABLE IF NOT EXISTS points (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      lat REAL NOT NULL,
-      lng REAL NOT NULL,
-      device_ts INTEGER NOT NULL,
-      server_ts INTEGER NOT NULL,
-      UNIQUE(device_ts, lat, lng)
-    );
-    CREATE INDEX IF NOT EXISTS idx_points_device_ts ON points(device_ts);
-    CREATE TABLE IF NOT EXISTS config (
-      key TEXT PRIMARY KEY,
-      value TEXT NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS media (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      point_id INTEGER NOT NULL,
-      type TEXT NOT NULL,
-      url TEXT NOT NULL,
-      title TEXT NOT NULL,
-      description TEXT NOT NULL
-    );
-    CREATE INDEX IF NOT EXISTS idx_media_point_id ON media(point_id);
-  `);
-  const count = sqlite.prepare("SELECT COUNT(*) as c FROM config").get() as { c: number };
-  if (count.c === 0) {
-    sqlite.exec(
-      "INSERT INTO config (key, value) VALUES ('sharing_enabled', '1'), ('public_delay_hours', '48')"
-    );
-  }
+  try {
+    const count = sqlite.prepare("SELECT COUNT(*) as c FROM config").get() as { c: number } | undefined;
+    if (count?.c === 0) {
+      sqlite.exec(
+        "INSERT INTO config (key, value) VALUES ('sharing_enabled', '1'), ('public_delay_hours', '48')"
+      );
+    }
+  } catch {}
   return _db;
 }
 
@@ -84,7 +62,7 @@ export function getLastSyncServerTs(): number | null {
   return rows[0]?.serverTs ?? null;
 }
 
-export function getMediaByPointIds(pointIds: number[]): Array<{ pointId: number; type: string; url: string; title: string; description: string }> {
+export function getMediaByPointIds(pointIds: number[]): Array<{ pointId: number; type: string; url: string; title: string; description: string; provider: string | null }> {
   if (pointIds.length === 0) return [];
   const db = ensureDb();
   return db
@@ -93,7 +71,8 @@ export function getMediaByPointIds(pointIds: number[]): Array<{ pointId: number;
       type: media.type,
       url: media.url,
       title: media.title,
-      description: media.description
+      description: media.description,
+      provider: media.provider
     })
     .from(media)
     .where(inArray(media.pointId, pointIds))

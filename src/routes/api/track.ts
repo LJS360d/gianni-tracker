@@ -17,7 +17,7 @@ export async function GET(_event: APIEvent) {
 
     const db = getDb();
     const rows = db
-      .select({ id: points.id, lat: points.lat, lng: points.lng, deviceTs: points.deviceTs })
+      .select({ id: points.id, lat: points.lat, lng: points.lng, deviceTs: points.deviceTs, segmentType: points.segmentType })
       .from(points)
       .where(lt(points.deviceTs, cutoff))
       .orderBy(points.deviceTs)
@@ -26,7 +26,8 @@ export async function GET(_event: APIEvent) {
     const trackPoints: Point[] = rows.map(r => ({
       lat: r.lat,
       lng: r.lng,
-      device_ts: r.deviceTs
+      device_ts: r.deviceTs,
+      segment_type: r.segmentType ?? "ground"
     }));
     const downsampled = downsampleTrack(trackPoints);
     const downsampledIds = downsampled.map(
@@ -39,7 +40,8 @@ export async function GET(_event: APIEvent) {
       type: m.type,
       url: m.url,
       title: m.title,
-      description: m.description
+      description: m.description,
+      provider: m.provider ?? undefined
     }));
 
     return new Response(

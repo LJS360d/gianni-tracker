@@ -1,10 +1,11 @@
 import { getDb, media, points, setConfig } from "../src/lib/db";
+import { type SegmentType, type MediaType } from "../src/lib/schema";
 
 const now = Date.now();
 const hour = 60 * 60 * 1000;
 
 type Waypoint = { lat: number; lng: number };
-type Leg = { from: Waypoint; to: Waypoint; segment_type: "ground" | "plane" | "boat"; steps: number };
+type Leg = { from: Waypoint; to: Waypoint; segment_type: SegmentType; steps: number };
 
 function interpolate(from: Waypoint, to: Waypoint, steps: number): Waypoint[] {
   const out: Waypoint[] = [];
@@ -34,7 +35,7 @@ const legs: Leg[] = [
   { from: { lat: 35.65, lng: 139.7 }, to: { lat: 35.68, lng: 139.69 }, segment_type: "ground", steps: 5 }
 ];
 
-const allPoints: Array<{ lat: number; lng: number; device_ts: number; segment_type: "ground" | "plane" | "boat" }> = [];
+const allPoints: Array<{ lat: number; lng: number; device_ts: number; segment_type: SegmentType }> = [];
 let t = now - 400 * hour;
 for (const leg of legs) {
   const pts = interpolate(leg.from, leg.to, leg.steps);
@@ -79,37 +80,36 @@ if (n === 0) {
   process.exit(1);
 }
 
-const mediaTemplates: Array<{ type: "image" | "video"; provider: "youtube" | "imgur" | "local"; url: string; title: string; description: string }> = [
-  { type: "image", provider: "local", url: "/media/photo-1.jpg", title: "Lucca walls", description: "Morning at the walls of Lucca." },
-  { type: "video", provider: "youtube", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", title: "Road diary 1", description: "First leg towards Serbia." },
-  { type: "image", provider: "imgur", url: "https://i.imgur.com/placeholder.jpg", title: "Belgrade", description: "Arrival in Belgrade." },
-  { type: "video", provider: "local", url: "/media/clip-1.mp4", title: "Sofia", description: "Short clip in Sofia." },
-  { type: "image", provider: "local", url: "/media/photo-2.jpg", title: "Istanbul", description: "Bosphorus view." },
-  { type: "video", provider: "youtube", url: "https://www.youtube.com/watch?v=jNQXAC9IVRw", title: "Turkey coast", description: "Coastal stretch." },
-  { type: "image", provider: "imgur", url: "https://i.imgur.com/placeholder2.jpg", title: "Tbilisi", description: "Georgia capital." },
-  { type: "video", provider: "local", url: "/media/clip-2.mp4", title: "Flight to Ashgabat", description: "From the plane." },
-  { type: "image", provider: "local", url: "/media/photo-3.jpg", title: "Ashgabat", description: "Turkmenistan." },
-  { type: "video", provider: "youtube", url: "https://www.youtube.com/watch?v=9bZkp7q19f0", title: "Samarkand", description: "Registan." },
-  { type: "image", provider: "imgur", url: "https://i.imgur.com/placeholder3.jpg", title: "Steppe", description: "Mongolian steppe." },
-  { type: "video", provider: "local", url: "/media/clip-3.mp4", title: "Ulan Bator", description: "Ulaanbaatar." },
-  { type: "image", provider: "local", url: "/media/photo-4.jpg", title: "Beijing", description: "Forbidden City area." },
-  { type: "video", provider: "youtube", url: "https://www.youtube.com/watch?v=2Vv-BfVoq4g", title: "Great Wall", description: "Great Wall visit." },
-  { type: "image", provider: "imgur", url: "https://i.imgur.com/placeholder4.jpg", title: "Shanghai", description: "Bund at night." },
-  { type: "video", provider: "local", url: "/media/clip-4.mp4", title: "Ferry to Korea", description: "Boat to Seoul." },
-  { type: "image", provider: "local", url: "/media/photo-5.jpg", title: "Seoul", description: "Seoul downtown." },
-  { type: "video", provider: "youtube", url: "https://www.youtube.com/watch?v=placeholder", title: "Busan", description: "East coast." },
-  { type: "image", provider: "imgur", url: "https://i.imgur.com/placeholder5.jpg", title: "Ferry to Japan", description: "Departure." },
-  { type: "video", provider: "local", url: "/media/clip-5.mp4", title: "Tokyo", description: "Arrival in Tokyo." }
+const mediaTemplates: Array<{ type: MediaType; url: string; title: string; description: string }> = [
+  { type: "image", url: "/data/photo-1.jpg", title: "Lucca walls", description: "Morning at the walls of Lucca." },
+  { type: "video", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", title: "Road diary 1", description: "First leg towards Serbia." },
+  { type: "image", url: "https://i.imgur.com/placeholder.jpg", title: "Belgrade", description: "Arrival in Belgrade." },
+  { type: "video", url: "/data/clip-1.mp4", title: "Sofia", description: "Short clip in Sofia." },
+  { type: "image", url: "/data/photo-2.jpg", title: "Istanbul", description: "Bosphorus view." },
+  { type: "video", url: "https://www.youtube.com/watch?v=jNQXAC9IVRw", title: "Turkey coast", description: "Coastal stretch." },
+  { type: "image", url: "https://i.imgur.com/placeholder2.jpg", title: "Tbilisi", description: "Georgia capital." },
+  { type: "video", url: "/data/clip-2.mp4", title: "Flight to Ashgabat", description: "From the plane." },
+  { type: "image", url: "/data/photo-3.jpg", title: "Ashgabat", description: "Turkmenistan." },
+  { type: "video", url: "https://www.youtube.com/watch?v=9bZkp7q19f0", title: "Samarkand", description: "Registan." },
+  { type: "image", url: "https://i.imgur.com/placeholder3.jpg", title: "Steppe", description: "Mongolian steppe." },
+  { type: "video", url: "/data/clip-3.mp4", title: "Ulan Bator", description: "Ulaanbaatar." },
+  { type: "image", url: "/data/photo-4.jpg", title: "Beijing", description: "Forbidden City area." },
+  { type: "video", url: "https://www.youtube.com/watch?v=2Vv-BfVoq4g", title: "Great Wall", description: "Great Wall visit." },
+  { type: "image", url: "https://i.imgur.com/placeholder4.jpg", title: "Shanghai", description: "Bund at night." },
+  { type: "video", url: "/data/clip-4.mp4", title: "Ferry to Korea", description: "Boat to Seoul." },
+  { type: "image", url: "/data/photo-5.jpg", title: "Seoul", description: "Seoul downtown." },
+  { type: "video", url: "https://www.youtube.com/watch?v=placeholder", title: "Busan", description: "East coast." },
+  { type: "image", url: "https://i.imgur.com/placeholder5.jpg", title: "Ferry to Japan", description: "Departure." },
+  { type: "video", url: "/data/clip-5.mp4", title: "Tokyo", description: "Arrival in Tokyo." }
 ];
 
-const mediaEntries: Array<{ pointIndex: number; type: "image" | "video"; provider: "youtube" | "imgur" | "local"; url: string; title: string; description: string }> = [];
+const mediaEntries: Array<{ pointIndex: number; type: MediaType; url: string; title: string; description: string }> = [];
 for (let i = 0; i < 105; i++) {
   const template = mediaTemplates[i % mediaTemplates.length];
   const pointIndex = Math.floor((i / 105) * (n - 1));
   mediaEntries.push({
     pointIndex,
     type: template.type,
-    provider: template.provider,
     url: template.url.replace("placeholder", `p${i}`).replace("photo-1", `photo-${(i % 20) + 1}`).replace("clip-1", `clip-${(i % 10) + 1}`),
     title: `${template.title} (${i + 1})`,
     description: template.description
@@ -120,6 +120,7 @@ let mediaInserted = 0;
 for (const entry of mediaEntries) {
   const idx = Math.min(entry.pointIndex, orderedIds.length - 1);
   const pointId = orderedIds[idx].id;
+  const createdAt = Math.floor(Date.now() / 1000);
   db.insert(media)
     .values({
       pointId,
@@ -127,7 +128,7 @@ for (const entry of mediaEntries) {
       url: entry.url,
       title: entry.title,
       description: entry.description,
-      provider: entry.provider
+      createdAt
     })
     .run();
   mediaInserted++;

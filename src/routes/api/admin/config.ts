@@ -1,28 +1,12 @@
 import type { APIEvent } from "@solidjs/start/server";
+import { checkAdmin, jsonResponse, unauthorized } from "~/lib/admin-auth";
 import { getDelayHours, isSharingEnabled, setConfig } from "~/lib/db";
-
-const ADMIN_TOKEN = process.env.ADMIN_ACCESS_TOKEN ?? "";
-
-function unauthorized() {
-  return new Response(JSON.stringify({ error: "Unauthorized" }), {
-    status: 401,
-    headers: { "Content-Type": "application/json" }
-  });
-}
-
-function checkAdmin(request: Request): boolean {
-  if (!ADMIN_TOKEN) return true;
-  return request.headers.get("Authorization") === `Bearer ${ADMIN_TOKEN}`;
-}
 
 export async function GET(event: APIEvent) {
   if (!checkAdmin(event.request)) return unauthorized();
   const delayHours = getDelayHours();
   const sharingEnabled = isSharingEnabled();
-  return new Response(
-    JSON.stringify({ delay_hours: delayHours, sharing_enabled: sharingEnabled }),
-    { status: 200, headers: { "Content-Type": "application/json" } }
-  );
+  return jsonResponse({ delay_hours: delayHours, sharing_enabled: sharingEnabled });
 }
 
 export async function PATCH(event: APIEvent) {
@@ -31,10 +15,7 @@ export async function PATCH(event: APIEvent) {
   try {
     body = await event.request.json();
   } catch {
-    return new Response(JSON.stringify({ error: "Invalid JSON" }), {
-      status: 400,
-      headers: { "Content-Type": "application/json" }
-    });
+    return jsonResponse({ error: "Invalid JSON" }, 400);
   }
   if (typeof body.delay_hours === "number" && body.delay_hours >= 0) {
     const hours = Math.min(168, Math.round(body.delay_hours));
@@ -45,8 +26,5 @@ export async function PATCH(event: APIEvent) {
   }
   const delayHours = getDelayHours();
   const sharingEnabled = isSharingEnabled();
-  return new Response(
-    JSON.stringify({ delay_hours: delayHours, sharing_enabled: sharingEnabled }),
-    { status: 200, headers: { "Content-Type": "application/json" } }
-  );
+  return jsonResponse({ delay_hours: delayHours, sharing_enabled: sharingEnabled });
 }

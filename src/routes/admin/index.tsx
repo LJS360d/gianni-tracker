@@ -1,17 +1,11 @@
-import { createEffect, createSignal, onMount } from "solid-js";
+import { useStore } from "@nanostores/solid";
+import { createEffect, createSignal } from "solid-js";
 import { useI18n } from "~/i18n";
-
-const ADMIN_TOKEN_KEY = "gianni_admin_token";
+import { apiHeaders } from "~/lib/admin-client";
+import { adminTokenStore, clearAdminToken, setAdminToken } from "~/lib/admin-store";
 
 type Config = { delay_hours: number; sharing_enabled: boolean };
 type Status = { last_sync_server_ts: number | null };
-
-function apiHeaders(token: string): HeadersInit {
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`
-  };
-}
 
 function formatLastSync(ts: number | null): string {
   if (ts == null) return "";
@@ -21,7 +15,7 @@ function formatLastSync(ts: number | null): string {
 
 export default function AdminConfig() {
   const { t } = useI18n();
-  const [token, setToken] = createSignal("");
+  const token = useStore(adminTokenStore);
   const [tokenInput, setTokenInput] = createSignal("");
   const [config, setConfig] = createSignal<Config | null>(null);
   const [status, setStatus] = createSignal<Status | null>(null);
@@ -29,30 +23,23 @@ export default function AdminConfig() {
   const [pendingDelay, setPendingDelay] = createSignal<number | null>(null);
   const [pendingSharing, setPendingSharing] = createSignal<boolean | null>(null);
 
-  onMount(() => {
-    const stored = typeof sessionStorage !== "undefined" ? sessionStorage.getItem(ADMIN_TOKEN_KEY) : null;
-    if (stored) setToken(stored);
-  });
-
   function saveToken(value: string) {
-    setToken(value);
-    if (typeof sessionStorage !== "undefined") sessionStorage.setItem(ADMIN_TOKEN_KEY, value);
+    setAdminToken(value);
     setTokenInput("");
     setError(null);
   }
 
   function logout() {
-    setToken("");
+    clearAdminToken();
     setConfig(null);
     setStatus(null);
-    if (typeof sessionStorage !== "undefined") sessionStorage.removeItem(ADMIN_TOKEN_KEY);
   }
 
   createEffect(() => {
     const tkn = token();
     if (!tkn) return;
     setError(null);
-    fetch("/api/admin/config", { headers: { Authorization: `Bearer ${tkn}` } })
+    fetch("/api/admin/config", { headers: apiHeaders(tkn!) })
       .then(r => {
         if (r.status === 401) {
           setError(t("admin.unauthorized"));
@@ -62,7 +49,7 @@ export default function AdminConfig() {
         return r.json();
       })
       .then(data => data && setConfig({ delay_hours: data.delay_hours, sharing_enabled: data.sharing_enabled }));
-    fetch("/api/admin/status", { headers: { Authorization: `Bearer ${tkn}` } })
+    fetch("/api/admin/status", { headers: apiHeaders(tkn!) })
       .then(r => r.json())
       .then(data => setStatus({ last_sync_server_ts: data.last_sync_server_ts }));
   });
@@ -79,7 +66,7 @@ export default function AdminConfig() {
     if (!tkn) return;
     fetch("/api/admin/config", {
       method: "PATCH",
-      headers: apiHeaders(tkn),
+      headers: apiHeaders(tkn!),
       body: JSON.stringify({ delay_hours: hours })
     })
       .then(r => r.json())
@@ -94,7 +81,7 @@ export default function AdminConfig() {
     if (!tkn) return;
     fetch("/api/admin/config", {
       method: "PATCH",
-      headers: apiHeaders(tkn),
+      headers: apiHeaders(tkn!),
       body: JSON.stringify({ sharing_enabled: enabled })
     })
       .then(r => r.json())

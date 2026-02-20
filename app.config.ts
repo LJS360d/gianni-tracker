@@ -4,6 +4,7 @@ import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   vite: {
+    logLevel: "info",
     plugins: [
       tailwindcss(),
       VitePWA({

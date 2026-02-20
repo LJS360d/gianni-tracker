@@ -6,7 +6,6 @@ export type MediaItem = {
   url: string;
   title: string;
   description: string;
-  provider?: string;
 };
 
 function getYoutubeEmbedId(url: string): string | null {
@@ -26,11 +25,10 @@ function getYoutubeEmbedId(url: string): string | null {
 
 function isLocalVideo(item: MediaItem): boolean {
   if (item.type !== "video") return false;
-  if (item.provider === "local") return true;
   try {
+    if (item.url.startsWith("/")) return /\.(mp4|webm|ogg|mov)(\?|$)/i.test(item.url);
     const u = new URL(item.url);
-    const path = u.pathname.toLowerCase();
-    return /\.(mp4|webm|ogg|mov)(\?|$)/i.test(path) || (!item.provider && /\.(mp4|webm|ogg|mov)(\?|$)/i.test(item.url));
+    return /\.(mp4|webm|ogg|mov)(\?|$)/i.test(u.pathname.toLowerCase());
   } catch {
     return false;
   }

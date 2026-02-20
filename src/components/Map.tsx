@@ -14,7 +14,6 @@ type MediaEntry = {
   url: string;
   title: string;
   description: string;
-  provider?: string;
 };
 
 const SEGMENT_STYLE: Record<string, L.PolylineOptions> = {
@@ -101,8 +100,7 @@ export default function Map(props: Props) {
                 type: entry.type,
                 url: entry.url,
                 title: entry.title,
-                description: entry.description,
-                provider: entry.provider
+                description: entry.description
               });
             });
           }

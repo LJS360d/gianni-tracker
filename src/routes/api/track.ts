@@ -40,8 +40,7 @@ export async function GET(_event: APIEvent) {
       type: m.type,
       url: m.url,
       title: m.title,
-      description: m.description,
-      provider: m.provider ?? undefined
+      description: m.description
     }));
 
     return new Response(

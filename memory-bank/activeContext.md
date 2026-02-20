@@ -14,7 +14,8 @@
 ## What Comes Next
 
 1. Deploy / production hardening as needed
-2. **Planned (see progress.md “Planned / Backlog”)**: Rich Lucca→Tokyo seed (many points; Serbia, Bulgaria, Turkey, Georgia → plane → Turkmenistan → China/Mongolia/Ulan Bator → boat → Seoul → Korea east coast → boat → Japan); special polyline types for plane/boat; ≥100 photo/video entries; media support for local/embedded video (actual `<video>` player), not only YouTube/Imgur
+2. **Backoffice (Gianni admin)**: Media CRUD (list, create, edit title/description, delete; optional upload for local files) and trip content (one markdown blob, load/save in admin/content). Full spec: **memory-bank/backoffice.md**
+3. **Planned (see progress.md “Planned / Backlog”)**: Rich Lucca→Tokyo seed (many points; Serbia, Bulgaria, Turkey, Georgia → plane → Turkmenistan → China/Mongolia/Ulan Bator → boat → Seoul → Korea east coast → boat → Japan); special polyline types for plane/boat; ≥100 photo/video entries; media support for local/embedded video (actual `<video>` player), not only YouTube/Imgur
 
 ## Active Decisions
 

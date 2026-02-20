@@ -8,10 +8,9 @@ export const dict = {
     admin: "Admin"
   },
   admin: {
-    title: "Admin",
+    title: "Title",
     config: "Config",
     media: "Media",
-    content: "Content",
     backToMap: "Back to map",
     tokenPlaceholder: "Admin token",
     submitToken: "Unlock",
@@ -22,7 +21,24 @@ export const dict = {
     error: "Error",
     unauthorized: "Invalid or missing token",
     mediaIntro: "Upload and manage photos and videos attached to track points.",
-    contentIntro: "Edit titles and descriptions for media and trip content (Markdown supported)."
+    addMedia: "Add media",
+    point: "Point",
+    type: "Type",
+    url: "URL",
+    description: "Description",
+    save: "Save",
+    cancel: "Cancel",
+    delete: "Delete",
+    editMedia: "Edit",
+    or: "or",
+    uploadFile: "Upload file",
+    created: "Created",
+    taken: "Taken",
+    pageSize: "Per page",
+    prev: "Previous",
+    next: "Next",
+    of: "of",
+    deleteMediaConfirm: "Delete this media?"
   },
   map: {
     loading: "Loading map…",

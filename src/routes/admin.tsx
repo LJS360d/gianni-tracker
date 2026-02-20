@@ -29,9 +29,6 @@ export default function AdminLayout(props: { children?: import("solid-js").JSX.E
             <A href="/admin/media" class={`block rounded px-3 py-2 text-sm ${linkClass("/admin/media")}`}>
               {t("admin.media")}
             </A>
-            <A href="/admin/content" class={`block rounded px-3 py-2 text-sm ${linkClass("/admin/content")}`}>
-              {t("admin.content")}
-            </A>
           </nav>
         </div>
       </aside>

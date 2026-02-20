@@ -52,8 +52,7 @@ export async function GET(event: APIEvent) {
       type: m.type,
       url: m.url,
       title: m.title,
-      description: m.description,
-      provider: m.provider ?? undefined
+      description: m.description
     }));
     return new Response(
       JSON.stringify({ points: downsampled, media, delay_hours: delayHours }),

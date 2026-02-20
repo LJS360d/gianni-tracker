@@ -8,10 +8,9 @@ export const dict = {
     admin: "Admin"
   },
   admin: {
-    title: "Admin",
+    title: "Titolo",
     config: "Config",
     media: "Media",
-    content: "Content",
     backToMap: "Torna alla mappa",
     tokenPlaceholder: "Token admin",
     submitToken: "Sblocca",
@@ -22,7 +21,24 @@ export const dict = {
     never: "Mai",
     unauthorized: "Token mancante o non valido",
     mediaIntro: "Carica e gestisci foto e video associati ai punti del percorso.",
-    contentIntro: "Modifica titoli e descrizioni per i media e il viaggio (Markdown supportato)."
+    addMedia: "Aggiungi media",
+    point: "Punto",
+    type: "Tipo",
+    url: "URL",
+    description: "Descrizione",
+    save: "Salva",
+    cancel: "Annulla",
+    delete: "Elimina",
+    editMedia: "Modifica",
+    or: "oppure",
+    uploadFile: "Carica file",
+    created: "Creato",
+    taken: "Scattato",
+    pageSize: "Per pagina",
+    prev: "Precedente",
+    next: "Successivo",
+    of: "di",
+    deleteMediaConfirm: "Eliminare questo media?"
   },
   map: {
     loading: "Caricamento mappa…",

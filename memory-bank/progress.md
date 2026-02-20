@@ -49,5 +49,6 @@
 
 ## Planned / Backlog
 
+- **Backoffice (Gianni admin)** — Implemented: Media API (GET/POST `/api/admin/media`, GET `/api/admin/points`, PATCH/DELETE `/api/admin/media/[id]`); Media UI (list, create form, inline edit title/description, delete with confirm); Content API (GET/PUT `/api/admin/content`, config key `trip_content_md`); Content UI (EasyMDE load from API, Save button). Optional still: file upload and serve `/media/*`. Full spec: **memory-bank/backoffice.md**.
 - Serve local media files (e.g. `/media/*`) so seed local URLs work; optional storage/upload for admin.
 - Further route/media tweaks as needed.

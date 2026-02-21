@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+    --background: #0d0d0d;
+    --foreground: #e5e5e5;
+}
+
+html,
+body {
+    height: 100svh;
+}
+
+.tv-display {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+}
+
+.tv-display .leaflet-control-zoom a {
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+    background: #1a1a1a;
+    border-color: #444;
+}
+
+.tv-display .leaflet-control-zoom a:hover {
+    background: #2a2a2a;
+    color: #fff;
+}

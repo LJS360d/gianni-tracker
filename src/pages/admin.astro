@@ -1,0 +1,73 @@
+---
+import { db, points, media, config, desc, lte } from "astro:db";
+import Layout from "@/layouts/Layout.astro";
+// 1. Fetch Stats
+const lastSynced = await db
+    .select()
+    .from(points)
+    .orderBy(desc(points.deviceTs))
+    .limit(1);
+
+const configRows = await db.select().from(config);
+const delayHours = parseInt(
+    configRows.find((c) => c.key === "public_delay_hours")?.value || "0",
+);
+const cutoff = Date.now() - delayHours * 60 * 60 * 1000;
+
+const lastPublic = await db
+    .select()
+    .from(points)
+    .where(lte(points.deviceTs, cutoff))
+    .orderBy(desc(points.deviceTs))
+    .limit(1);
+
+// 2. Fetch Media & Config for initial state
+const allMedia = await db.select().from(media).orderBy(desc(media.createdAt));
+---
+
+<Layout>
+    <main class="max-w-4xl mx-auto p-4 space-y-8">
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div
+                class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200"
+            >
+                <p
+                    class="text-xs font-semibold uppercase tracking-wider text-slate-500"
+                >
+                    Last Synced Point
+                </p>
+                <p class="text-lg font-mono mt-1">
+                    {
+                        lastSynced[0]
+                            ? `${lastSynced[0].lat.toFixed(4)}, ${lastSynced[0].lng.toFixed(4)}`
+                            : "N/A"
+                    }
+                </p>
+                <p class="text-sm text-slate-400">
+                    {
+                        lastSynced[0]
+                            ? new Date(lastSynced[0].deviceTs).toLocaleString()
+                            : ""
+                    }
+                </p>
+            </div>
+            <div
+                class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200"
+            >
+                <p
+                    class="text-xs font-semibold uppercase tracking-wider text-indigo-600"
+                >
+                    Last Public Point
+                </p>
+                <p class="text-lg font-mono mt-1">
+                    {
+                        lastPublic[0]
+                            ? `${lastPublic[0].lat.toFixed(4)}, ${lastPublic[0].lng.toFixed(4)}`
+                            : "N/A"
+                    }
+                </p>
+                <p class="text-sm text-slate-400">Delay: {delayHours}h</p>
+            </div>
+        </section>
+    </main>
+</Layout>

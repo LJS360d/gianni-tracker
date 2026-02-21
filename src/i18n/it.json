@@ -1,0 +1,46 @@
+{
+  "admin": {
+    "title": "Title",
+    "config": "Config",
+    "media": "Media",
+    "backToMap": "Back to map",
+    "tokenPlaceholder": "Admin token",
+    "submitToken": "Unlock",
+    "delayLabel": "Public delay (hours)",
+    "sharingLabel": "Sharing enabled",
+    "lastSync": "Last sync",
+    "never": "Never",
+    "error": "Error",
+    "unauthorized": "Invalid or missing token",
+    "mediaIntro": "Upload and manage photos and videos attached to track points.",
+    "addMedia": "Add media",
+    "point": "Point",
+    "type": "Type",
+    "url": "URL",
+    "description": "Description",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "editMedia": "Edit",
+    "or": "or",
+    "uploadFile": "Upload file",
+    "created": "Created",
+    "taken": "Taken",
+    "pageSize": "Per page",
+    "prev": "Previous",
+    "next": "Next",
+    "of": "of",
+    "deleteMediaConfirm": "Delete this media?"
+  },
+  "map": {
+    "loading": "Loading map…",
+    "lastUpdate": "Last update"
+  },
+  "settings": {
+    "title": "Settings"
+  },
+  "meta": {
+    "title": "GTracker",
+    "description": "Follow this journey on the world map. Track, photos and videos along the route."
+  }
+}
